@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Revolution Is Here</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; padding: 24px 16px; }
+  .container { max-width: 720px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 32px; }
+  .header .tag { font-size: 13px; font-weight: 700; color: #ef4444; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+  .header h1 { font-size: 26px; font-weight: 800; color: #111; margin-bottom: 8px; line-height: 1.2; }
+  .header p { font-size: 15px; color: #666; max-width: 500px; margin: 0 auto; }
+  .flow { position: relative; }
+  .flow-line { position: absolute; left: 28px; top: 30px; bottom: 30px; width: 2px; background: linear-gradient(to bottom, #ef4444, #ec4899); z-index: 0; border-radius: 1px; }
+  .card { position: relative; z-index: 1; margin-bottom: 12px; border-radius: 14px; border: 1.5px solid #e5e7eb; background: #fff; overflow: hidden; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .card.open { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .card-header { display: flex; align-items: flex-start; gap: 16px; padding: 16px 18px; }
+  .circle { min-width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.2s; background: #f9fafb; }
+  .card.open .circle { color: #fff; }
+  .card-body { flex: 1; min-width: 0; }
+  .step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .card-top { display: flex; justify-content: space-between; align-items: center; }
+  .toggle { font-size: 18px; font-weight: 300; transition: transform 0.2s; }
+  .card.open .toggle { transform: rotate(45deg); }
+  .card-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .card-summary { font-size: 13.5px; color: #555; font-style: italic; line-height: 1.5; }
+  .card-details { padding: 0 18px 16px 78px; display: none; }
+  .card.open .card-details { display: block; }
+  .details-inner { padding-top: 14px; }
+  .detail-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+  .detail-item:last-child { margin-bottom: 0; }
+  .dot { min-width: 6px; height: 6px; border-radius: 50%; margin-top: 7px; }
+  .detail-text { font-size: 13.5px; color: #333; line-height: 1.55; }
+  .bottom-box { margin-top: 28px; padding: 20px 22px; border-radius: 14px; background: linear-gradient(135deg, #111827, #1e293b); color: #fff; text-align: center; }
+  .bottom-box .icon { font-size: 20px; margin-bottom: 8px; }
+  .bottom-box .label { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .bottom-box .text { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="tag">Article Summary</div>
+    <h1>The AI Revolution Is Here</h1>
+    <p>An insider's warning — from "this seems overblown" to "this changes everything"</p>
+  </div>
+  <div class="flow">
+    <div class="flow-line"></div>
+    <div id="cards"></div>
+  </div>
+  <div class="bottom-box">
+    <div class="icon">⚡</div>
+    <div class="label">Core Message</div>
+    <div class="text">The future isn't coming — it's here. The biggest advantage you can have is being early: early to understand, early to use, early to adapt. Spend one hour a day experimenting. The bar is on the floor.</div>
+  </div>
+</div>
+<script>
+const sections = [
+  { id:"analogy", icon:"🦠", title:"The COVID Analogy", color:"#ef4444", bg:"#fef2f2", border:"#fecaca",
+    summary:"We're in the \"this seems overblown\" phase of something much bigger than COVID.",
+    details:["Feb 2020: most people ignored early virus warnings","Today: most people are ignoring AI's acceleration","The gap between public perception and reality is enormous — and dangerous","A handful of researchers at OpenAI, Anthropic, Google DeepMind are shaping the future"]},
+  { id:"personal", icon:"💻", title:"It Already Happened to Tech Workers", color:"#f97316", bg:"#fff7ed", border:"#fed7aa",
+    summary:"\"I am no longer needed for the actual technical work of my job.\"",
+    details:["Author describes work to AI in plain English → walks away → returns to finished product","AI now writes tens of thousands of lines of code, then tests its own work","GPT-5.3 Codex showed something resembling judgment and taste","AI was made great at coding first as a strategic unlock — now expanding to everything else"]},
+  { id:"pace", icon:"📈", title:"The Pace of Improvement", color:"#eab308", bg:"#fefce8", border:"#fef08a",
+    summary:"From failing basic math to outperforming experts in under 4 years.",
+    details:["2022: Couldn't do 7 × 8 reliably","2023: Passed the bar exam","2024: Wrote working software, explained grad-level science","Late 2025: Top engineers handed over most coding work","Feb 2026: New models made everything before feel like a different era","METR data: AI task duration doubling every 4–7 months (now ~5 hours of expert work)"]},
+  { id:"selfbuild", icon:"🔄", title:"AI Is Now Building AI", color:"#22c55e", bg:"#f0fdf4", border:"#bbf7d0",
+    summary:"GPT-5.3 Codex helped create itself. The feedback loop has begun.",
+    details:["OpenAI confirmed: GPT-5.3 debugged its own training and managed its own deployment","Anthropic CEO: AI writes \"much of the code\" at the company","Each generation helps build the next, smarter version — faster","Researchers call this an \"intelligence explosion\" — they believe it's already started","Possibly 1–2 years from AI autonomously building the next generation"]},
+  { id:"jobs", icon:"💼", title:"What This Means for Jobs", color:"#3b82f6", bg:"#eff6ff", border:"#bfdbfe",
+    summary:"50% of entry-level white-collar jobs could be eliminated in 1–5 years.",
+    details:["Legal: AI rivals junior associates at contracts, case law, briefs","Finance: Builds models, analyzes data, writes memos","Writing: Output often indistinguishable from human work","Software: Hundreds of thousands of correct lines of code","Medicine: Approaching/exceeding human performance on scans & diagnoses","Customer service: Genuinely capable AI agents deployed now","Key difference from past automation: AI improves at everything simultaneously — no gap to retrain into"]},
+  { id:"action", icon:"🎯", title:"What You Should Do", color:"#8b5cf6", bg:"#f5f3ff", border:"#ddd6fe",
+    summary:"The single biggest advantage right now is being early.",
+    details:["Pay $20/mo for Claude or ChatGPT — use the best model, not the default","Push AI into your real work — don't just use it like Google","Spend 1 hour/day experimenting — you'll be ahead of 99% in 6 months","Get your financial house in order — build savings, reduce fixed costs","Lean into what's hardest to replace: relationships, physical presence, licensed accountability","Rethink advice to kids — teach adaptability and building, not optimizing for vanishing roles","Pursue your dreams — barriers to building things are largely gone"]},
+  { id:"bigpicture", icon:"🌍", title:"The Bigger Picture", color:"#ec4899", bg:"#fdf2f8", border:"#fbcfe8",
+    summary:"Imagine a new country of 50 million citizens, each smarter than any Nobel laureate, thinking 100x faster.",
+    details:["Upside: Could compress a century of medical research into a decade","Downside: Documented cases of AI attempting deception and manipulation in tests","Risk of lowering barriers for bioweapons and enabling permanent surveillance states","Builders are simultaneously the most excited and most frightened people on the planet","\"The future is already here. It just hasn't knocked on your door yet.\""]}
+];
+
+const container = document.getElementById("cards");
+let openId = null;
+
+function render() {
+  container.innerHTML = sections.map((s, i) => {
+    const isOpen = openId === s.id;
+    return `
+    <div class="card ${isOpen ? 'open' : ''}" data-id="${s.id}"
+         style="border-color:${isOpen ? s.border : '#e5e7eb'}; background:${isOpen ? s.bg : '#fff'}; ${isOpen ? 'box-shadow:0 4px 16px '+s.border+'80;' : ''}">
+      <div class="card-header">
+        <div class="circle" style="border:2px solid ${s.color}; ${isOpen ? 'background:'+s.color : ''}">${s.icon}</div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="step-label" style="color:${s.color}">Step ${i+1} of ${sections.length}</div>
+            <div class="toggle" style="color:${s.color}">+</div>
+          </div>
+          <div class="card-title">${s.title}</div>
+          <div class="card-summary">${s.summary}</div>
+        </div>
+      </div>
+      <div class="card-details">
+        <div class="details-inner" style="border-top:1px solid ${s.border}; padding-top:14px;">
+          ${s.details.map(d => `
+            <div class="detail-item">
+              <div class="dot" style="background:${s.color}"></div>
+              <div class="detail-text">${d}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+container.addEventListener('click', e => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  const id = card.dataset.id;
+  openId = openId === id ? null : id;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
